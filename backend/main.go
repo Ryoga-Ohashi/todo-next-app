@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -50,6 +51,18 @@ func main() {
 	// 	})
 	// })
 
+	// CORS設定
+	r.Use(func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(http.StatusNoContent)
+			return
+		}
+		c.Next()
+	})
+
 	// タスクを取得するエンドポイント
 	r.GET("/tasks", func(c *gin.Context) {
 		var tasks []Task
@@ -60,10 +73,20 @@ func main() {
 	r.GET("/tasks/:id", func(c *gin.Context) {
 		var task Task
 		id := c.Param("id")
-		if err := db.First(&task, id).Error; err != nil {
+		uuid, err := uuid.Parse(id)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid UUID"})
+			return
+		}
+
+		if err := db.First(&task, "id = ?", uuid).Error; err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Task not found"})
 			return
 		}
+		// if err := db.First(&task, id).Error; err != nil {
+		// 	c.JSON(http.StatusNotFound, gin.H{"error": "Task not found"})
+		// 	return
+		// }
 		c.JSON(http.StatusOK, task)
 	})
 
@@ -83,10 +106,20 @@ func main() {
 		var task Task
 		id := c.Param("id")
 
-		if err := db.First(&task, id).Error; err != nil {
+		uuid, err := uuid.Parse(id)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid UUID"})
+			return
+		}
+
+		if err := db.First(&task, "id = ?", uuid).Error; err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Task not found"})
 			return
 		}
+		// if err := db.First(&task, id).Error; err != nil {
+		// 	c.JSON(http.StatusNotFound, gin.H{"error": "Task not found"})
+		// 	return
+		// }
 
 		if err := c.ShouldBindJSON(&task); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -102,10 +135,21 @@ func main() {
 		var task Task
 		id := c.Param("id")
 
-		if err := db.First(&task, id).Error; err != nil {
+		uuid, err := uuid.Parse(id)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid UUID"})
+			return
+		}
+
+		if err := db.First(&task, "id = ?", uuid).Error; err != nil {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Task not found"})
 			return
 		}
+
+		// if err := db.First(&task, id).Error; err != nil {
+		// 	c.JSON(http.StatusNotFound, gin.H{"error": "Task not found"})
+		// 	return
+		// }
 
 		db.Delete(&task)
 		c.JSON(http.StatusOK, gin.H{"message": "Task deleted"})
@@ -116,7 +160,7 @@ func main() {
 }
 
 type Task struct {
-	ID          uint      `gorm:"primary_key"`
+	ID          uuid.UUID `gorm:"primary_key"`
 	Task        string    `gorm:"size:255"`
 	IsCompleted bool      `gorm:"default:false"`
 	CreatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP"`
