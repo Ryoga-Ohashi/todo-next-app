@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# アプリケーションの説明
+- next.jsとtypescript, Go言語を使用してTodoリストを作成しました。
 
-## Getting Started
+# 実行方法
+- `docker compose up -d`を実行
+- [localhost](http://localhost:3000/)に接続
 
-First, run the development server:
+# 課題内容
+## 課題
+- Rest APIを利用したWebアプリケーションを作る。
+- アプリの種類は問わない。簡易的なもので良い。
+- 例えば、Todoリスト、掲示板など。
+## 要件
+***必須***
+1. フロントエンド    
+   1. [x] React (Next.js) と TypeScript を使用
+   2. [x] UIフレームワークにAntDesignを使用
+2. バックエンド
+   1. [x] Go言語を使用
+3. 開発環境    
+   - [x] git でバージョン管理を行い、GitHub にアップロードする    
+   - [x] Dockerを使ったローカル開発環境構築
+***なお良い（できてなくてもOK）***
+   - lint, test の導入
+   - OpenAPI でのスキーマ定義
+   - GitHub Actions での CI/CD 構築
+   - [x] PostgreSQL を使用
+   - [x] README.mdの作成
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# フォルダ構成
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## next.js内のsrcファイル
+src
+├── app
+│   ├── api.ts
+│   ├── components
+│   │   ├── AddTask.tsx
+│   │   ├── Todo.tsx
+│   │   ├── TodoList.module.css
+│   │   ├── TodoList.tsx
+│   │   └── header.tsx
+│   ├── favicon.ico
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── page.module.css
+│   └── page.tsx
+└── types
+    └── tasks.ts
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## バックエンド
+backend
+├── Dockerfile
+├── docker-compose.yml
+├── go.mod
+├── go.sum
+├── main.go
+└── script
 
-## Learn More
+# githubページ
+- https://github.com/Ryoga-Ohashi/todo-next-app.git
 
-To learn more about Next.js, take a look at the following resources:
+# SQLテーブル
+| ID          | UUID   | "primary_key"               |
+| Task        | string | "size:255"                  |
+| IsCompleted | bool   | "default:false"             |
+| CreatedAt   | Time   | "default:CURRENT_TIMESTAMP" |
+| UpdatedAt   | Time   | "default:CURRENT_TIMESTAMP" |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
