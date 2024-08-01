@@ -4,24 +4,25 @@ import { Task } from "@/types/tasks";
 import { useEffect, useRef, useState } from "react";
 import { deleteTodo, updateTodo } from "../api";
 import { useRouter } from "next/navigation";
-// import { PencilAltIcon, SaveIcon, TrashIcon } from "@heroicons/react/solid";
+import { Input, List, Button, Space, Typography, Checkbox, CheckboxProps } from "antd";
+import { EditOutlined, SaveOutlined, DeleteOutlined } from "@ant-design/icons";
+
+const { Text } = Typography;
 
 interface TaskProps {
   todo: Task;
 }
 
-export default function Todo({ todo }: TaskProps) {
-  const router = useRouter();
 
+export default function Todo({todo}: TaskProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedTaskText, setEditedTaskText] = useState(todo.task);
-  
-  console.log(todo.id);
+  let updateIsComplete = todo.isComplete;
   useEffect(() => {
     if (isEditing) {
-      // isEditingがtrueならinputにフォーカスを当てる
       inputRef.current?.focus();
     }
   }, [isEditing]);
@@ -31,7 +32,7 @@ export default function Todo({ todo }: TaskProps) {
   };
 
   const handleSaveButtonClick = async () => {
-    await updateTodo(todo.id, editedTaskText);
+    await updateTodo(todo.id, editedTaskText, todo.isComplete);
     setIsEditing(false);
     router.refresh();
   };
@@ -41,46 +42,51 @@ export default function Todo({ todo }: TaskProps) {
   };
 
   const handleDelete = async () => {
-  console.log('ID in deleteTodo:', todo.id); // 追加
-
     await deleteTodo(todo.id);
     router.refresh();
   };
 
+  const onCheck: CheckboxProps['onChange'] = async(e) => {
+    updateIsComplete = !todo.isComplete;
+    console.log(updateIsComplete);
+    await updateTodo(todo.id, editedTaskText,updateIsComplete);
+    router.refresh();
+  };
+
   return (
-    <li
-      key={todo.id}
-      className="flex justify-between p-4 bg-white border-l-4 border-blue-500 rounded shadow"
-    >
-      {isEditing ? (
-        <input
-          ref={inputRef}
-          value={editedTaskText}
-          onChange={handleInputChange}
-          className="mr-2 py-1 px-2 rounded border-gray-400 border"
-        />
-      ) : (
-        <span className="text-gray-700">{todo.task}</span>
-      )}
-      <div className="flex">
-        {isEditing ? (
-          <button
+    <List.Item
+      actions={[
+        isEditing ? (
+          <Button
+            type="primary"
+            icon={<SaveOutlined />}
             onClick={handleSaveButtonClick}
-            className="h-5 w-5 text-blue-500 hover:text-blue-700 cursor-pointer mr-3"
           />
         ) : (
-          <>
-            <button
-              onClick={handleEditButtonClick}
-              className="h-5 w-5 text-green-400 hover:text-green-700 cursor-pointer mr-3"
-            />
-          </>
-        )}
-        <button
+          <Button
+            type="default"
+            icon={<EditOutlined />}
+            onClick={handleEditButtonClick}
+          />
+        ),
+        <Button
+          type="default"
+          danger
+          icon={<DeleteOutlined />}
           onClick={handleDelete}
-          className="h-5 w-5 text-red-500 hover:text-red-700 cursor-pointer"
+        />,
+      ]}
+    >
+     <Checkbox onChange={onCheck} checked={updateIsComplete} style={{ marginRight: 8 }} />
+      {isEditing ? (
+        <Input
+          value={editedTaskText}
+          onChange={handleInputChange}
+        //   ref={inputRef}
         />
-      </div>
-    </li>
+      ) : (
+        <Text>{todo.task}</Text>
+      )}
+    </List.Item>
   );
 }
