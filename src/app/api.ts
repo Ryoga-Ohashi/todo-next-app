@@ -32,7 +32,8 @@ export const addTodo = async (todo: Task): Promise<Task> => {
 
 export const updateTodo = async (
   id: string,
-  newText: string
+  newText: string,
+  isComplete:boolean,
 ): Promise<Task> => {
   console.log(newText);
   const res = await fetch(`${rendUrl}/tasks/${id}`, {
@@ -40,7 +41,7 @@ export const updateTodo = async (
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ task: newText }),
+    body: JSON.stringify({ task: newText ,iscompleted:isComplete}),
   });
   const updatedTodo = await res.json();
   return updatedTodo;
