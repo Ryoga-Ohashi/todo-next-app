@@ -7,6 +7,7 @@ services:
       - 3000:3000
     volumes:
       - ./:/nextjs
+      - /nextjs/node_modules  # コンテナ内のnode_modulesを使用
     depends_on:
       - db
       - api
