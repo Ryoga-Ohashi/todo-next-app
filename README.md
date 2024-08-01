@@ -1,9 +1,51 @@
 # アプリケーションの説明
 - next.jsとtypescript, Go言語を使用してTodoリストを作成しました。
 
-# 実行方法
+## 実行方法
 - `docker compose up -d`を実行
 - [localhost](http://localhost:3000/)に接続
+
+## フォルダ構成
+
+### next.js内のsrcファイル
+```
+src
+├── app
+│   ├── api.ts
+│   ├── components
+│   │   ├── AddTask.tsx
+│   │   ├── Todo.tsx
+│   │   ├── TodoList.module.css
+│   │   ├── TodoList.tsx
+│   │   └── header.tsx
+│   ├── favicon.ico
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── page.module.css
+│   └── page.tsx
+└── types
+    └── tasks.ts
+```
+
+### バックエンド
+```
+backend
+├── Dockerfile
+├── docker-compose.yml
+├── go.mod
+├── go.sum
+├── main.go
+└── script
+```
+
+## SQLテーブル
+| カラムの名前 | データ型 |         オプション          |
+| ------------ | -------- | --------------------------- |
+| ID           | UUID     | "primary_key"               |
+| Task         | String   | "size:255"                  |
+| IsCompleted  | Bool     | "default:false"             |
+| CreatedAt    | Time     | "default:CURRENT_TIMESTAMP" |
+| UpdatedAt    | Time     | "default:CURRENT_TIMESTAMP" |
 
 # 課題内容
 ## 課題
@@ -28,49 +70,7 @@
    - [x] README.mdの作成
 
 
-# フォルダ構成
-
-## next.js内のsrcファイル
-```
-src
-├── app
-│   ├── api.ts
-│   ├── components
-│   │   ├── AddTask.tsx
-│   │   ├── Todo.tsx
-│   │   ├── TodoList.module.css
-│   │   ├── TodoList.tsx
-│   │   └── header.tsx
-│   ├── favicon.ico
-│   ├── globals.css
-│   ├── layout.tsx
-│   ├── page.module.css
-│   └── page.tsx
-└── types
-    └── tasks.ts
-```
-
-## バックエンド
-```
-backend
-├── Dockerfile
-├── docker-compose.yml
-├── go.mod
-├── go.sum
-├── main.go
-└── script
-```
-
 # githubページ
 - https://github.com/Ryoga-Ohashi/todo-next-app.git
-
-# SQLテーブル
-| カラムの名前 | データ型 |         オプション          |
-| ------------ | -------- | --------------------------- |
-| ID           | UUID     | "primary_key"               |
-| Task         | String   | "size:255"                  |
-| IsCompleted  | Bool     | "default:false"             |
-| CreatedAt    | Time     | "default:CURRENT_TIMESTAMP" |
-| UpdatedAt    | Time     | "default:CURRENT_TIMESTAMP" |
 
 
