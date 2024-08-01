@@ -21,9 +21,9 @@
    - [x] git でバージョン管理を行い、GitHub にアップロードする    
    - [x] Dockerを使ったローカル開発環境構築
 ***なお良い（できてなくてもOK）***
-   - lint, test の導入
-   - OpenAPI でのスキーマ定義
-   - GitHub Actions での CI/CD 構築
+   - [ ] lint, test の導入
+   - [ ] OpenAPI でのスキーマ定義
+   - [ ] GitHub Actions での CI/CD 構築
    - [x] PostgreSQL を使用
    - [x] README.mdの作成
 
@@ -31,6 +31,7 @@
 # フォルダ構成
 
 ## next.js内のsrcファイル
+```
 src
 ├── app
 │   ├── api.ts
@@ -47,8 +48,10 @@ src
 │   └── page.tsx
 └── types
     └── tasks.ts
+```
 
 ## バックエンド
+```
 backend
 ├── Dockerfile
 ├── docker-compose.yml
@@ -56,15 +59,18 @@ backend
 ├── go.sum
 ├── main.go
 └── script
+```
 
 # githubページ
 - https://github.com/Ryoga-Ohashi/todo-next-app.git
 
 # SQLテーブル
-| ID          | UUID   | "primary_key"               |
-| Task        | string | "size:255"                  |
-| IsCompleted | bool   | "default:false"             |
-| CreatedAt   | Time   | "default:CURRENT_TIMESTAMP" |
-| UpdatedAt   | Time   | "default:CURRENT_TIMESTAMP" |
+| カラムの名前 | データ型 |         オプション          |
+| ------------ | -------- | --------------------------- |
+| ID           | UUID     | "primary_key"               |
+| Task         | String   | "size:255"                  |
+| IsCompleted  | Bool     | "default:false"             |
+| CreatedAt    | Time     | "default:CURRENT_TIMESTAMP" |
+| UpdatedAt    | Time     | "default:CURRENT_TIMESTAMP" |
 
 
