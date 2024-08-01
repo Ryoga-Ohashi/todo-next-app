@@ -10,7 +10,7 @@ services:
     depends_on:
       - db
       - api
-    command: npm run dev
+    # command: npm run dev
     networks:
       - api-net
   api:
