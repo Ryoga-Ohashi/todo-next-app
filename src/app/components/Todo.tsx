@@ -55,6 +55,7 @@ export default function Todo({todo}: TaskProps) {
 
   return (
     <List.Item
+    key={todo.id}
       actions={[
         isEditing ? (
           <Button
