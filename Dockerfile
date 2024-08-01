@@ -5,6 +5,7 @@ WORKDIR /nextjs
 COPY . .
 
 RUN npm install
+RUN npm install next react react-dom
 RUN npm install uuid
 RUN npm i --save-dev @types/uuid
 RUN npm install antd --save
