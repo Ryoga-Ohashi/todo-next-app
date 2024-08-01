@@ -2,7 +2,8 @@
 - next.jsとtypescript, Go言語を使用してTodoリストを作成しました。
 
 ## 実行方法
-- `docker compose up -d`を実行
+- `docker compose build`
+- `docker compose up`
 - [localhost](http://localhost:3000/)に接続
 
 ## フォルダ構成
