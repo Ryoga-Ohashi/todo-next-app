@@ -2,19 +2,16 @@ FROM node:20-alpine
 
 WORKDIR /nextjs
 
-COPY . .
+# パッケージファイルを先にコピーして依存関係をインストール
+COPY package*.json ./
 
 RUN npm install
-RUN npm install next react react-dom uuid @types/uuid antd @ant-design/nextjs-registry
 
-# RUN npm install
-# RUN npm install next react react-dom
-# RUN npm install uuid
-# RUN npm i --save-dev @types/uuid
-# RUN npm install antd --save
-# RUN npm run build
-# RUN npm install @ant-design/nextjs-registry --save
+# 残りのソースコードをコピー
+COPY . .
 
+# ビルドを実行（必要に応じて）
 RUN npm run build
 
+# 開発サーバーを起動
 CMD ["npm", "run", "dev"]
