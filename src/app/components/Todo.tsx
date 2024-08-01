@@ -71,6 +71,7 @@ export default function Todo({todo}: TaskProps) {
           />
         ),
         <Button
+          key={todo.id}
           type="default"
           danger
           icon={<DeleteOutlined />}
